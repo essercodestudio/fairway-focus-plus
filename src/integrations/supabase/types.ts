@@ -14,16 +14,416 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      achievements: {
+        Row: {
+          achievement_type: string | null
+          description: string | null
+          earned_at: string
+          id: string
+          player_id: string
+          title: string
+          tournament_id: string | null
+        }
+        Insert: {
+          achievement_type?: string | null
+          description?: string | null
+          earned_at?: string
+          id?: string
+          player_id: string
+          title: string
+          tournament_id?: string | null
+        }
+        Update: {
+          achievement_type?: string | null
+          description?: string | null
+          earned_at?: string
+          id?: string
+          player_id?: string
+          title?: string
+          tournament_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "achievements_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournaments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      courses: {
+        Row: {
+          created_at: string
+          id: string
+          location: string | null
+          name: string
+          par: number | null
+          total_holes: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          location?: string | null
+          name: string
+          par?: number | null
+          total_holes?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          location?: string | null
+          name?: string
+          par?: number | null
+          total_holes?: number | null
+        }
+        Relationships: []
+      }
+      group_players: {
+        Row: {
+          created_at: string
+          group_id: string
+          id: string
+          is_captain: boolean | null
+          player_id: string
+        }
+        Insert: {
+          created_at?: string
+          group_id: string
+          id?: string
+          is_captain?: boolean | null
+          player_id: string
+        }
+        Update: {
+          created_at?: string
+          group_id?: string
+          id?: string
+          is_captain?: boolean | null
+          player_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_players_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      holes: {
+        Row: {
+          course_id: string
+          distance_meters: number | null
+          handicap_index: number
+          hole_number: number
+          id: string
+          par: number
+        }
+        Insert: {
+          course_id: string
+          distance_meters?: number | null
+          handicap_index: number
+          hole_number: number
+          id?: string
+          par: number
+        }
+        Update: {
+          course_id?: string
+          distance_meters?: number | null
+          handicap_index?: number
+          hole_number?: number
+          id?: string
+          par?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "holes_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          cpf: string
+          created_at: string
+          full_name: string
+          handicap: number | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cpf: string
+          created_at?: string
+          full_name: string
+          handicap?: number | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cpf?: string
+          created_at?: string
+          full_name?: string
+          handicap?: number | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      scores: {
+        Row: {
+          confirmed: boolean | null
+          created_at: string
+          hole_id: string
+          id: string
+          net_strokes: number | null
+          player_id: string
+          recorded_by: string
+          strokes: number
+          tournament_id: string
+        }
+        Insert: {
+          confirmed?: boolean | null
+          created_at?: string
+          hole_id: string
+          id?: string
+          net_strokes?: number | null
+          player_id: string
+          recorded_by: string
+          strokes: number
+          tournament_id: string
+        }
+        Update: {
+          confirmed?: boolean | null
+          created_at?: string
+          hole_id?: string
+          id?: string
+          net_strokes?: number | null
+          player_id?: string
+          recorded_by?: string
+          strokes?: number
+          tournament_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scores_hole_id_fkey"
+            columns: ["hole_id"]
+            isOneToOne: false
+            referencedRelation: "holes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scores_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournaments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tournament_groups: {
+        Row: {
+          access_code: string
+          captain_id: string | null
+          created_at: string
+          group_name: string
+          id: string
+          starting_hole: number | null
+          tournament_id: string
+        }
+        Insert: {
+          access_code: string
+          captain_id?: string | null
+          created_at?: string
+          group_name: string
+          id?: string
+          starting_hole?: number | null
+          tournament_id: string
+        }
+        Update: {
+          access_code?: string
+          captain_id?: string | null
+          created_at?: string
+          group_name?: string
+          id?: string
+          starting_hole?: number | null
+          tournament_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tournament_groups_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournaments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tournaments: {
+        Row: {
+          course_id: string
+          created_at: string
+          created_by: string
+          id: string
+          name: string
+          status: string | null
+          tournament_date: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          created_by: string
+          id?: string
+          name: string
+          status?: string | null
+          tournament_date: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          name?: string
+          status?: string | null
+          tournament_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tournaments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      training_scores: {
+        Row: {
+          created_at: string
+          hole_id: string
+          id: string
+          session_id: string
+          strokes: number
+        }
+        Insert: {
+          created_at?: string
+          hole_id: string
+          id?: string
+          session_id: string
+          strokes: number
+        }
+        Update: {
+          created_at?: string
+          hole_id?: string
+          id?: string
+          session_id?: string
+          strokes?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_scores_hole_id_fkey"
+            columns: ["hole_id"]
+            isOneToOne: false
+            referencedRelation: "holes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_scores_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "training_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      training_sessions: {
+        Row: {
+          completed: boolean | null
+          course_id: string
+          created_at: string
+          id: string
+          player_id: string
+          session_date: string
+        }
+        Insert: {
+          completed?: boolean | null
+          course_id: string
+          created_at?: string
+          id?: string
+          player_id: string
+          session_date: string
+        }
+        Update: {
+          completed?: boolean | null
+          course_id?: string
+          created_at?: string
+          id?: string
+          player_id?: string
+          session_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_sessions_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_access_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      get_user_role: {
+        Args: { user_uuid: string }
+        Returns: Database["public"]["Enums"]["app_role"]
+      }
+      has_role: {
+        Args: {
+          role_name: Database["public"]["Enums"]["app_role"]
+          user_uuid: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "super_admin" | "admin" | "player"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +550,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["super_admin", "admin", "player"],
+    },
   },
 } as const
