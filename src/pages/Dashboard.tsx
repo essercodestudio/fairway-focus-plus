@@ -7,6 +7,7 @@ import { Trophy, Users, Target, Award, Calendar, Plus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/lib/auth';
 import { useNavigate } from 'react-router-dom';
+import AIAdvisorCard from '@/components/AIAdvisorCard';
 
 interface DashboardStats {
   tournaments: number;
@@ -234,6 +235,9 @@ const Dashboard = () => {
             )}
           </CardContent>
         </Card>
+
+        {/* AI Advisor */}
+        <AIAdvisorCard />
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
