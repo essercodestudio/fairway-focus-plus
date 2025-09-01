@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { LogOut, Menu, Home, Trophy, Users, Target, Award } from 'lucide-react';
+import { LogOut, Menu, Home, Trophy, Users, Target, Award, Settings, UserCog, Flag } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { supabase } from '@/integrations/supabase/client';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -13,19 +14,72 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [userRole, setUserRole] = useState<string>('');
+
+  useEffect(() => {
+    fetchUserRole();
+  }, [user]);
+
+  const fetchUserRole = async () => {
+    if (!user) return;
+    
+    const { data } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(1);
+    
+    if (data && data.length > 0) {
+      setUserRole(data[0].role);
+    }
+  };
 
   const handleSignOut = async () => {
     await signOut();
     navigate('/auth');
   };
 
-  const menuItems = [
+  const playerMenuItems = [
     { icon: Home, label: 'Dashboard', path: '/dashboard' },
     { icon: Trophy, label: 'Torneios', path: '/tournaments' },
-    { icon: Users, label: 'Grupos', path: '/groups' },
     { icon: Target, label: 'Treino', path: '/training' },
     { icon: Award, label: 'Conquistas', path: '/achievements' },
   ];
+
+  const adminMenuItems = [
+    { icon: Home, label: 'Dashboard', path: '/dashboard' },
+    { icon: Trophy, label: 'Torneios', path: '/tournaments' },
+    { icon: Users, label: 'Grupos', path: '/groups' },
+    { icon: Flag, label: 'Campos', path: '/courses' },
+    { icon: UserCog, label: 'Jogadores', path: '/players' },
+    { icon: Target, label: 'Treino', path: '/training' },
+    { icon: Award, label: 'Conquistas', path: '/achievements' },
+  ];
+
+  const superAdminMenuItems = [
+    { icon: Home, label: 'Dashboard', path: '/dashboard' },
+    { icon: Trophy, label: 'Torneios', path: '/tournaments' },
+    { icon: Users, label: 'Grupos', path: '/groups' },
+    { icon: Flag, label: 'Campos', path: '/courses' },
+    { icon: UserCog, label: 'Jogadores', path: '/players' },
+    { icon: Settings, label: 'Administração', path: '/admin' },
+    { icon: Target, label: 'Treino', path: '/training' },
+    { icon: Award, label: 'Conquistas', path: '/achievements' },
+  ];
+
+  const getMenuItems = () => {
+    switch (userRole) {
+      case 'super_admin':
+        return superAdminMenuItems;
+      case 'admin':
+        return adminMenuItems;
+      default:
+        return playerMenuItems;
+    }
+  };
+
+  const menuItems = getMenuItems();
 
   const MenuItem = ({ icon: Icon, label, path }: { icon: any; label: string; path: string }) => (
     <Button
@@ -51,10 +105,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </SheetTrigger>
             <SheetContent side="left" className="w-72">
               <div className="flex flex-col h-full">
-                <div className="py-6">
-                  <h2 className="text-lg font-bold text-primary">18BIRDIES</h2>
-                  <p className="text-sm text-muted-foreground">{user?.email}</p>
-                </div>
+                 <div className="py-6">
+                   <h2 className="text-lg font-bold text-primary">18BIRDIES</h2>
+                   <p className="text-sm text-muted-foreground">{user?.email}</p>
+                   {userRole && (
+                     <p className="text-xs text-primary font-medium mt-1">
+                       {userRole === 'super_admin' ? 'Super Admin' : 
+                        userRole === 'admin' ? 'Admin' : 'Jogador'}
+                     </p>
+                   )}
+                 </div>
                 
                 <nav className="flex-1 space-y-2">
                   {menuItems.map((item) => (
@@ -87,10 +147,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="flex">
         {/* Desktop Sidebar */}
         <aside className="hidden md:flex h-screen w-64 flex-col border-r bg-card">
-          <div className="p-6 border-b">
-            <h2 className="text-xl font-bold text-primary">18BIRDIES</h2>
-            <p className="text-sm text-muted-foreground mt-1">{user?.email}</p>
-          </div>
+           <div className="p-6 border-b">
+             <h2 className="text-xl font-bold text-primary">18BIRDIES</h2>
+             <p className="text-sm text-muted-foreground mt-1">{user?.email}</p>
+             {userRole && (
+               <p className="text-xs text-primary font-medium mt-1">
+                 {userRole === 'super_admin' ? 'Super Admin' : 
+                  userRole === 'admin' ? 'Admin' : 'Jogador'}
+               </p>
+             )}
+           </div>
           
           <nav className="flex-1 p-4 space-y-2">
             {menuItems.map((item) => (
