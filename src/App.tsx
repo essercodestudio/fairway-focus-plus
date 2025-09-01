@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Tournaments from "./pages/Tournaments";
+import Training from "./pages/Training";
 import PlayerManagement from "./pages/PlayerManagement";
 import ConfirmMatch from "./pages/ConfirmMatch";
 import Leaderboard from "./pages/Leaderboard";
@@ -56,6 +57,7 @@ const App = () => (
             <Route path="/auth" element={<PublicRoute><Auth /></PublicRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/tournaments" element={<ProtectedRoute><Tournaments /></ProtectedRoute>} />
+            <Route path="/training" element={<ProtectedRoute><Training /></ProtectedRoute>} />
             <Route path="/tournaments/:tournamentId/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
             <Route path="/tournaments/:tournamentId/confirm" element={<ProtectedRoute><ConfirmMatch /></ProtectedRoute>} />
             <Route path="/players" element={<ProtectedRoute><PlayerManagement /></ProtectedRoute>} />

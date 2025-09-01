@@ -44,7 +44,7 @@ const Index = () => {
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-            Sistema completo de gerenciamento para o esporte de Golfe
+            Sistema completo de gerenciamento para torneios de Golfe
           </p>
           
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
