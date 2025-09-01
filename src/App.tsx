@@ -7,6 +7,11 @@ import { AuthProvider, useAuth } from "./lib/auth";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import Tournaments from "./pages/Tournaments";
+import PlayerManagement from "./pages/PlayerManagement";
+import ConfirmMatch from "./pages/ConfirmMatch";
+import Leaderboard from "./pages/Leaderboard";
+import PlayerDetail from "./pages/PlayerDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +55,11 @@ const App = () => (
             <Route path="/" element={<PublicRoute><Index /></PublicRoute>} />
             <Route path="/auth" element={<PublicRoute><Auth /></PublicRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/tournaments" element={<ProtectedRoute><Tournaments /></ProtectedRoute>} />
+            <Route path="/tournaments/:tournamentId/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
+            <Route path="/tournaments/:tournamentId/confirm" element={<ProtectedRoute><ConfirmMatch /></ProtectedRoute>} />
+            <Route path="/players" element={<ProtectedRoute><PlayerManagement /></ProtectedRoute>} />
+            <Route path="/players/:playerId" element={<ProtectedRoute><PlayerDetail /></ProtectedRoute>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
